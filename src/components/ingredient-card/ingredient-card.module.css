@@ -1,0 +1,25 @@
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.card {
+  position: relative;
+  width: 272px;
+  text-align: center;
+}
+
+.card img {
+  display: block;
+  margin-inline: auto;
+}
+
+p {
+  margin: 0;
+}
+
+.tall-text {
+  min-height: 48px;
+}
