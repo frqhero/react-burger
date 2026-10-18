@@ -21,33 +21,39 @@ export const BurgerIngredients = ({ ingredients }) => {
     <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
-          <Tab
-            value="bun"
-            active={true}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Булки
-          </Tab>
-          <Tab
-            value="main"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Начинки
-          </Tab>
-          <Tab
-            value="sauce"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Соусы
-          </Tab>
+          <li>
+            <Tab
+              value="bun"
+              active={true}
+              onClick={() => {
+                /* TODO */
+              }}
+            >
+              Булки
+            </Tab>
+          </li>
+          <li>
+            <Tab
+              value="sauce"
+              active={false}
+              onClick={() => {
+                /* TODO */
+              }}
+            >
+              Соусы
+            </Tab>
+          </li>
+          <li>
+            <Tab
+              value="main"
+              active={false}
+              onClick={() => {
+                /* TODO */
+              }}
+            >
+              Начинки
+            </Tab>
+          </li>
         </ul>
       </nav>
       <div className={`${styles.ingredients_container} custom-scroll`}>

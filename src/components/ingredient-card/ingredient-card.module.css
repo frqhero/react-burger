@@ -16,10 +16,6 @@
   margin-inline: auto;
 }
 
-p {
-  margin: 0;
-}
-
 .tall-text {
   min-height: 48px;
 }
