@@ -1,0 +1,14 @@
+.ingredient_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nutrition_values {
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  list-style-type: none;
+}

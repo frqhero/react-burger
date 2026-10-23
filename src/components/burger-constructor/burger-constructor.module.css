@@ -1,7 +1,45 @@
 .burger_constructor {
   display: flex;
   flex-direction: column;
+  gap: 40px;
   width: 600px;
-  padding-bottom: 20px;
   color: var(--text-primary-color);
+}
+
+.burger_components {
+  display: flex;
+  flex-direction: column;
+  width: 584px;
+  min-height: 0;
+}
+
+.fillings {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 0;
+  overflow-y: auto;
+  list-style-type: none;
+}
+
+.burger_filling {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.currency_icon {
+  width: 36px;
+  height: 36px;
+}
+
+.drag_icon {
+  flex-shrink: 0;
 }
