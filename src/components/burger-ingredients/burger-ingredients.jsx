@@ -4,7 +4,7 @@ import IngredientCard from '../ingredient-card/ingredient-card';
 
 import styles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = ({ ingredients }) => {
+export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
   const buns = ingredients.filter((element) => {
     return element.type === 'bun';
   });
@@ -61,7 +61,12 @@ export const BurgerIngredients = ({ ingredients }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {buns.map((item) => (
             <li key={item._id}>
-              <IngredientCard price={item.price} name={item.name} image={item.image} />
+              <IngredientCard
+                price={item.price}
+                name={item.name}
+                image={item.image}
+                onClick={() => onIngredientClick(item)}
+              />
             </li>
           ))}
         </ul>
@@ -70,7 +75,12 @@ export const BurgerIngredients = ({ ingredients }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {sauces.map((item) => (
             <li key={item._id}>
-              <IngredientCard price={item.price} name={item.name} image={item.image} />
+              <IngredientCard
+                price={item.price}
+                name={item.name}
+                image={item.image}
+                onClick={() => onIngredientClick(item)}
+              />
             </li>
           ))}
         </ul>
@@ -79,7 +89,12 @@ export const BurgerIngredients = ({ ingredients }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {content.map((item) => (
             <li key={item._id}>
-              <IngredientCard price={item.price} name={item.name} image={item.image} />
+              <IngredientCard
+                price={item.price}
+                name={item.name}
+                image={item.image}
+                onClick={() => onIngredientClick(item)}
+              />
             </li>
           ))}
         </ul>

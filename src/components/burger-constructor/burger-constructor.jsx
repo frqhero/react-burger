@@ -7,7 +7,7 @@ import {
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({ ingredients }) => {
+export const BurgerConstructor = ({ ingredients, onOrderClick }) => {
   console.log(ingredients);
 
   const bun = ingredients.find((el) => el.type === 'bun');
@@ -57,7 +57,7 @@ export const BurgerConstructor = ({ ingredients }) => {
       <div className={`${styles.info}`}>
         <p className="text text_type_digits-medium mr-2">{price}</p>
         <CurrencyIcon type="primary" className={styles.currency_icon} />
-        <Button extraClass="ml-10" size="large" type="primary">
+        <Button extraClass="ml-10" size="large" type="primary" onClick={onOrderClick}>
           Оформить заказ
         </Button>
       </div>
