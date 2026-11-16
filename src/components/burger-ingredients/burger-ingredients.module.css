@@ -13,3 +13,18 @@
   text-align: center;
   list-style-type: none;
 }
+
+.ingredients_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 32px 24px;
+  margin: 0;
+  text-align: center;
+  list-style-type: none;
+}
+
+.ingredients_container {
+  max-height: 500px;
+  overflow-y: auto;
+}
