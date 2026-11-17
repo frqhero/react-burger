@@ -1,4 +1,5 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useRef, useState } from 'react';
 
 import IngredientCard from '../ingredient-card/ingredient-card';
 
@@ -17,6 +18,36 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
     return element.type === 'main';
   });
 
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
+  const containerRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('bun');
+
+  const handleOnScroll = () => {
+    const containerTop = containerRef.current.getBoundingClientRect().top;
+
+    const bunTop = bunRef.current.getBoundingClientRect().top;
+    const sauceTop = sauceRef.current.getBoundingClientRect().top;
+    const mainTop = mainRef.current.getBoundingClientRect().top;
+
+    const values = {
+      bun: Math.abs(bunTop - containerTop),
+      sauce: Math.abs(sauceTop - containerTop),
+      main: Math.abs(mainTop - containerTop),
+    };
+
+    let closest = 'bun';
+
+    if (values.sauce < values.bun && values.sauce < values.main) {
+      closest = 'sauce';
+    } else if (values.main < values.bun && values.main < values.sauce) {
+      closest = 'main';
+    }
+
+    setActiveTab(closest);
+  };
+
   return (
     <section className={styles.burger_ingredients}>
       <nav>
@@ -24,7 +55,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           <li>
             <Tab
               value="bun"
-              active={true}
+              active={activeTab === 'bun'}
               onClick={() => {
                 /* TODO */
               }}
@@ -35,7 +66,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           <li>
             <Tab
               value="sauce"
-              active={false}
+              active={activeTab === 'sauce'}
               onClick={() => {
                 /* TODO */
               }}
@@ -46,7 +77,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           <li>
             <Tab
               value="main"
-              active={false}
+              active={activeTab === 'main'}
               onClick={() => {
                 /* TODO */
               }}
@@ -56,8 +87,14 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           </li>
         </ul>
       </nav>
-      <div className={`${styles.ingredients_container} custom-scroll`}>
-        <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
+      <div
+        className={`${styles.ingredients_container} custom-scroll`}
+        ref={containerRef}
+        onScroll={handleOnScroll}
+      >
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={bunRef}>
+          Булки
+        </h2>
         <ul className={`${styles.ingredients_list} pl-4`}>
           {buns.map((item) => (
             <li key={item._id}>
@@ -71,7 +108,9 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           ))}
         </ul>
 
-        <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={sauceRef}>
+          Соусы
+        </h2>
         <ul className={`${styles.ingredients_list} pl-4`}>
           {sauces.map((item) => (
             <li key={item._id}>
@@ -85,7 +124,9 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
           ))}
         </ul>
 
-        <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={mainRef}>
+          Начинки
+        </h2>
         <ul className={`${styles.ingredients_list} pl-4`}>
           {content.map((item) => (
             <li key={item._id}>
