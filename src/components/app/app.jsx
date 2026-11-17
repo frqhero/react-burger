@@ -1,7 +1,7 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { API_URL } from '@/utils/constants';
+import { useGetIngredientsQuery } from '@/api/ingredientsApi';
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
@@ -14,39 +14,14 @@ import OrderDetails from '../order-details/order-details';
 import styles from './app.module.css';
 
 export const App = () => {
-  const [apiIngredients, setApiIngredients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState(null);
+  const {
+    isLoading: loading,
+    error: apiError,
+    data: apiIngredients,
+  } = useGetIngredientsQuery();
 
   const [activeModal, setActiveModal] = useState(null);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
-
-  console.log(apiIngredients);
-
-  const apiDomain = API_URL;
-  const urlPath = '/api/ingredients';
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiDomain + urlPath);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setApiIngredients(data.data);
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-        setApiError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   function closeModal() {
     setActiveModal(null);
