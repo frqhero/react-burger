@@ -1,7 +1,12 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useGetIngredientsQuery } from '@/api/ingredientsApi';
+import {
+  getSelectedIngredient,
+  selectIngredient,
+} from '@/services/selectedIngredient/slice';
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
@@ -20,15 +25,17 @@ export const App = () => {
     data: apiIngredients,
   } = useGetIngredientsQuery();
 
+  const dispatch = useDispatch();
+
   const [activeModal, setActiveModal] = useState(null);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const selectedIngredient = useSelector(getSelectedIngredient);
 
   function closeModal() {
     setActiveModal(null);
   }
 
   function openIngredientModal(ingredient) {
-    setSelectedIngredient(ingredient);
+    dispatch(selectIngredient(ingredient));
     setActiveModal('ingredient');
   }
 
