@@ -1,11 +1,19 @@
-import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
+import { CheckMarkIcon, Preloader } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './order-details.module.css';
 
-export default function OrderDetails({ order }) {
+export default function OrderDetails({ orderMutation }) {
+  if (orderMutation.isLoading) {
+    return <Preloader />;
+  }
+
+  if (orderMutation.error) {
+    return <p>error</p>;
+  }
+
   return (
     <div className={`${styles.order_info} mt-20 mb-15`}>
-      <p className="text text_type_digits-large">{order.number}</p>
+      <p className="text text_type_digits-large">{orderMutation.data.order.number}</p>
       <p className="text text_type_main-medium mt-8">идентификатор заказа</p>
       <div className={`${styles.check_mark_wrapper} mt-15 mb-15`}>
         <CheckMarkIcon type="primary" className={styles.check_mark_icon} />

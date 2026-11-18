@@ -2,7 +2,7 @@ import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useGetIngredientsQuery } from '@/api/ingredientsApi';
+import { useCreateOrderMutation, useGetIngredientsQuery } from '@/api/burgerApi';
 import {
   getSelectedIngredient,
   selectIngredient,
@@ -11,7 +11,6 @@ import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import { order } from '../../utils/order_data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -19,11 +18,8 @@ import OrderDetails from '../order-details/order-details';
 import styles from './app.module.css';
 
 export const App = () => {
-  const {
-    isLoading: loading,
-    error: apiError,
-    data: apiIngredients,
-  } = useGetIngredientsQuery();
+  const ingredientsQuery = useGetIngredientsQuery();
+  const [createOrder, orderMutation] = useCreateOrderMutation();
 
   const dispatch = useDispatch();
 
@@ -41,6 +37,14 @@ export const App = () => {
 
   function openOrderModal() {
     setActiveModal('order');
+    const payload = {
+      ingredients: [
+        '692889f16bf770001bfeb4cc',
+        '692889f16bf770001bfeb4ce',
+        '692889f16bf770001bfeb4cc',
+      ],
+    };
+    createOrder(payload);
   }
 
   return (
@@ -50,18 +54,18 @@ export const App = () => {
         Соберите бургер
       </h1>
       <main className={`${styles.main} pl-5 pr-5`}>
-        {loading ? (
+        {ingredientsQuery.isLoading ? (
           <Preloader />
-        ) : apiError ? (
+        ) : ingredientsQuery.error ? (
           <p>Не удалось загрузить ингредиенты.</p>
         ) : (
           <>
             <BurgerIngredients
-              ingredients={apiIngredients}
+              ingredients={ingredientsQuery.data}
               onIngredientClick={openIngredientModal}
             />
             <BurgerConstructor
-              ingredients={apiIngredients}
+              ingredients={ingredientsQuery.data}
               onOrderClick={openOrderModal}
             />
           </>
@@ -74,7 +78,7 @@ export const App = () => {
       )}
       {activeModal === 'order' && (
         <Modal onClose={closeModal}>
-          <OrderDetails order={order} />
+          <OrderDetails orderMutation={orderMutation} />
         </Modal>
       )}
     </div>

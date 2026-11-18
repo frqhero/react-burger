@@ -8,8 +8,6 @@ import {
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = ({ ingredients, onOrderClick }) => {
-  console.log(ingredients);
-
   const bun = ingredients.find((el) => el.type === 'bun');
 
   const burgerFillings = ingredients.filter((el) => el.type !== 'bun');
@@ -17,8 +15,6 @@ export const BurgerConstructor = ({ ingredients, onOrderClick }) => {
   const price = ingredients.reduce((accumulator, current) => {
     return accumulator + current.price;
   }, 0);
-
-  console.log(price);
 
   return (
     <section className={`${styles.burger_constructor}`}>

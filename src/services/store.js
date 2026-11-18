@@ -1,9 +1,9 @@
 import { combineSlices, configureStore as createStore } from '@reduxjs/toolkit';
 
-import { ingredientsApi } from '../api/ingredientsApi.js';
+import { burgerApi } from '../api/burgerApi.js';
 import { selectedIngredientSlice } from './selectedIngredient/slice.js';
 
-const rootReducer = combineSlices(ingredientsApi, selectedIngredientSlice);
+const rootReducer = combineSlices(burgerApi, selectedIngredientSlice);
 
 export const configureStore = (initialState) => {
   return createStore({
@@ -11,7 +11,7 @@ export const configureStore = (initialState) => {
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) => {
       // Подключаем через middleware
-      return getDefaultMiddleware().concat(ingredientsApi.middleware);
+      return getDefaultMiddleware().concat(burgerApi.middleware);
     },
   });
 };
