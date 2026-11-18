@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useCreateOrderMutation, useGetIngredientsQuery } from '@/api/burgerApi';
 import {
+  clearSelectedIngredient,
   getSelectedIngredient,
   selectIngredient,
 } from '@/services/selectedIngredient/slice';
@@ -27,6 +28,7 @@ export const App = () => {
   const selectedIngredient = useSelector(getSelectedIngredient);
 
   function closeModal() {
+    dispatch(clearSelectedIngredient());
     setActiveModal(null);
   }
 

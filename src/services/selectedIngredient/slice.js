@@ -11,11 +11,15 @@ export const selectedIngredientSlice = createSlice({
     selectIngredient: (state, action) => {
       state.selectedIngredient = action.payload;
     },
+    clearSelectedIngredient: (state) => {
+      state.selectedIngredient = null;
+    },
   },
   selectors: {
     getSelectedIngredient: (state) => state.selectedIngredient,
   },
 });
 
-export const { selectIngredient } = selectedIngredientSlice.actions;
+export const { selectIngredient, clearSelectedIngredient } =
+  selectedIngredientSlice.actions;
 export const { getSelectedIngredient } = selectedIngredientSlice.selectors;
