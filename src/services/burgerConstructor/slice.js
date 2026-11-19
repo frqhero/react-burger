@@ -59,3 +59,12 @@ export const getConstructorCounts = createSelector(
     return counts;
   }
 );
+
+export const getPrice = createSelector([getBun, getIngredients], (bun, ingredients) => {
+  return [...(bun === null ? [] : [bun, bun]), ...ingredients].reduce(
+    (accumulator, current) => {
+      return accumulator + current.price;
+    },
+    0
+  );
+});

@@ -10,6 +10,7 @@ import {
   addIngredient,
   getBun,
   getIngredients,
+  getPrice,
   removeIngredient,
 } from '@/services/burgerConstructor/slice';
 
@@ -32,12 +33,7 @@ export const BurgerConstructor = ({ onOrderClick }) => {
   const bun = useSelector(getBun);
   const ingredients = useSelector(getIngredients);
 
-  const price = [...(bun === null ? [] : [bun, bun]), ...ingredients].reduce(
-    (accumulator, current) => {
-      return accumulator + current.price;
-    },
-    0
-  );
+  const price = useSelector(getPrice);
 
   return (
     <section className={`${styles.burger_constructor}`}>
