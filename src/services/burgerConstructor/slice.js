@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSelector, createSlice, nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
   bun: null,
@@ -45,3 +45,17 @@ export const burgerConstructorSlice = createSlice({
 export const { addIngredient, removeIngredient, reorderIngredients } =
   burgerConstructorSlice.actions;
 export const { getBun, getIngredients } = burgerConstructorSlice.selectors;
+
+export const getConstructorCounts = createSelector(
+  [getBun, getIngredients],
+  (bun, ingredients) => {
+    const counts = {};
+    if (bun !== null) {
+      counts[bun._id] = 2;
+    }
+    for (const ingredient of ingredients) {
+      counts[ingredient._id] = (counts[ingredient._id] ?? 0) + 1;
+    }
+    return counts;
+  }
+);

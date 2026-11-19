@@ -1,5 +1,8 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
+
+import { getConstructorCounts } from '@/services/burgerConstructor/slice';
 
 import styles from './ingredient-card.module.css';
 
@@ -11,9 +14,12 @@ function IngredientCard({ item, onClick }) {
     item: item,
   });
 
+  const constructorCounts = useSelector(getConstructorCounts);
+  const count = constructorCounts[item._id] ?? 0;
+
   return (
     <div className={styles.card} onClick={onClick} ref={dragRef}>
-      <Counter count={1} size="default" />
+      {count > 0 && <Counter count={count} size="default" />}
       <img src={image} />
       <div className={`${styles.price} mt-2 mb-2`}>
         <p className="text text_type_digits-default">{price}</p>
