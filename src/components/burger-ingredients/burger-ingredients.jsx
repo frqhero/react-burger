@@ -98,12 +98,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {buns.map((item) => (
             <li key={item._id}>
-              <IngredientCard
-                price={item.price}
-                name={item.name}
-                image={item.image}
-                onClick={() => onIngredientClick(item)}
-              />
+              <IngredientCard item={item} onClick={() => onIngredientClick(item)} />
             </li>
           ))}
         </ul>
@@ -114,12 +109,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {sauces.map((item) => (
             <li key={item._id}>
-              <IngredientCard
-                price={item.price}
-                name={item.name}
-                image={item.image}
-                onClick={() => onIngredientClick(item)}
-              />
+              <IngredientCard item={item} onClick={() => onIngredientClick(item)} />
             </li>
           ))}
         </ul>
@@ -130,12 +120,7 @@ export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
         <ul className={`${styles.ingredients_list} pl-4`}>
           {content.map((item) => (
             <li key={item._id}>
-              <IngredientCard
-                price={item.price}
-                name={item.name}
-                image={item.image}
-                onClick={() => onIngredientClick(item)}
-              />
+              <IngredientCard item={item} onClick={() => onIngredientClick(item)} />
             </li>
           ))}
         </ul>

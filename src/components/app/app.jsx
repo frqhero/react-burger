@@ -66,10 +66,7 @@ export const App = () => {
               ingredients={ingredientsQuery.data}
               onIngredientClick={openIngredientModal}
             />
-            <BurgerConstructor
-              ingredients={ingredientsQuery.data}
-              onOrderClick={openOrderModal}
-            />
+            <BurgerConstructor onOrderClick={openOrderModal} />
           </>
         )}
       </main>
