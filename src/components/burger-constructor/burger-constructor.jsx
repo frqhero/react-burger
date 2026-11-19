@@ -1,6 +1,5 @@
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
@@ -13,6 +12,8 @@ import {
   getIngredients,
   removeIngredient,
 } from '@/services/burgerConstructor/slice';
+
+import { ConstructorFilling } from '../constructor-filling/constructor-filling';
 
 import styles from './burger-constructor.module.css';
 
@@ -69,16 +70,12 @@ export const BurgerConstructor = ({ onOrderClick }) => {
               </div>
             </li>
           ) : (
-            ingredients.map((ingr) => (
-              <li key={ingr.uniqueId} className={styles.burger_filling}>
-                <DragIcon type="primary" className={styles.drag_icon} />
-                <ConstructorElement
-                  price={ingr.price}
-                  text={ingr.name}
-                  thumbnail={ingr.image}
-                  handleClose={() => dispatch(removeIngredient(ingr))}
-                />
-              </li>
+            ingredients.map((ingredient) => (
+              <ConstructorFilling
+                key={ingredient.uniqueId}
+                ingredient={ingredient}
+                onRemove={() => dispatch(removeIngredient(ingredient.uniqueId))}
+              />
             ))
           )}
         </ul>
