@@ -11,6 +11,7 @@ import {
   addIngredient,
   getBun,
   getIngredients,
+  removeIngredient,
 } from '@/services/burgerConstructor/slice';
 
 import styles from './burger-constructor.module.css';
@@ -75,6 +76,7 @@ export const BurgerConstructor = ({ onOrderClick }) => {
                   price={ingr.price}
                   text={ingr.name}
                   thumbnail={ingr.image}
+                  handleClose={() => dispatch(removeIngredient(ingr))}
                 />
               </li>
             ))

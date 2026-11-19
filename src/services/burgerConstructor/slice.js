@@ -20,6 +20,11 @@ export const burgerConstructorSlice = createSlice({
         });
       }
     },
+    removeIngredient: (state, action) => {
+      state.ingredients = state.ingredients.filter(
+        (el) => el.uniqueId !== action.payload.uniqueId
+      );
+    },
   },
   selectors: {
     getBun: (state) => state.bun,
@@ -27,5 +32,5 @@ export const burgerConstructorSlice = createSlice({
   },
 });
 
-export const { addIngredient } = burgerConstructorSlice.actions;
+export const { addIngredient, removeIngredient } = burgerConstructorSlice.actions;
 export const { getBun, getIngredients } = burgerConstructorSlice.selectors;
