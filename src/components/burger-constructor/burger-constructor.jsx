@@ -101,6 +101,7 @@ export const BurgerConstructor = ({ submitOrder }) => {
           extraClass="ml-10"
           size="large"
           type="primary"
+          disabled={bun === null}
           onClick={() => submitOrder(bun, ingredients)}
         >
           Оформить заказ
