@@ -18,7 +18,7 @@ import { ConstructorFilling } from '../constructor-filling/constructor-filling';
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({ onOrderClick }) => {
+export const BurgerConstructor = ({ submitOrder }) => {
   const dispatch = useDispatch();
 
   const [{ isOver, draggedItem }, dropTarget] = useDrop({
@@ -97,7 +97,12 @@ export const BurgerConstructor = ({ onOrderClick }) => {
       <div className={`${styles.info}`}>
         <p className="text text_type_digits-medium mr-2">{price}</p>
         <CurrencyIcon type="primary" className={styles.currency_icon} />
-        <Button extraClass="ml-10" size="large" type="primary" onClick={onOrderClick}>
+        <Button
+          extraClass="ml-10"
+          size="large"
+          type="primary"
+          onClick={() => submitOrder(bun, ingredients)}
+        >
           Оформить заказ
         </Button>
       </div>

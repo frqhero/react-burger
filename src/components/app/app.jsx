@@ -37,14 +37,12 @@ export const App = () => {
     setActiveModal('ingredient');
   }
 
-  function openOrderModal() {
+  function submitOrder(bun, ingredients) {
     setActiveModal('order');
+
+    const ingredientIds = ingredients.map((ingredient) => ingredient._id);
     const payload = {
-      ingredients: [
-        '692889f16bf770001bfeb4cc',
-        '692889f16bf770001bfeb4ce',
-        '692889f16bf770001bfeb4cc',
-      ],
+      ingredients: [bun._id, ...ingredientIds, bun._id],
     };
     createOrder(payload);
   }
@@ -66,7 +64,7 @@ export const App = () => {
               ingredients={ingredientsQuery.data}
               onIngredientClick={openIngredientModal}
             />
-            <BurgerConstructor onOrderClick={openOrderModal} />
+            <BurgerConstructor submitOrder={submitOrder} />
           </>
         )}
       </main>
