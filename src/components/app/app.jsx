@@ -1,12 +1,18 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { API_URL } from '@/utils/constants';
+import { useCreateOrderMutation, useGetIngredientsQuery } from '@/api/burgerApi';
+import { clearConstructor } from '@/services/burgerConstructor/slice';
+import {
+  clearSelectedIngredient,
+  getSelectedIngredient,
+  selectIngredient,
+} from '@/services/selectedIngredient/slice';
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import { order } from '../../utils/order_data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -14,51 +20,35 @@ import OrderDetails from '../order-details/order-details';
 import styles from './app.module.css';
 
 export const App = () => {
-  const [apiIngredients, setApiIngredients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState(null);
+  const ingredientsQuery = useGetIngredientsQuery();
+  const [createOrder, orderMutation] = useCreateOrderMutation();
+
+  const dispatch = useDispatch();
 
   const [activeModal, setActiveModal] = useState(null);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
-
-  console.log(apiIngredients);
-
-  const apiDomain = API_URL;
-  const urlPath = '/api/ingredients';
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiDomain + urlPath);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setApiIngredients(data.data);
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-        setApiError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const selectedIngredient = useSelector(getSelectedIngredient);
 
   function closeModal() {
+    dispatch(clearSelectedIngredient());
+    if (activeModal === 'order') {
+      dispatch(clearConstructor());
+    }
     setActiveModal(null);
   }
 
   function openIngredientModal(ingredient) {
-    setSelectedIngredient(ingredient);
+    dispatch(selectIngredient(ingredient));
     setActiveModal('ingredient');
   }
 
-  function openOrderModal() {
+  function submitOrder(bun, ingredients) {
     setActiveModal('order');
+
+    const ingredientIds = ingredients.map((ingredient) => ingredient._id);
+    const payload = {
+      ingredients: [bun._id, ...ingredientIds, bun._id],
+    };
+    createOrder(payload);
   }
 
   return (
@@ -68,20 +58,14 @@ export const App = () => {
         Соберите бургер
       </h1>
       <main className={`${styles.main} pl-5 pr-5`}>
-        {loading ? (
+        {ingredientsQuery.isLoading ? (
           <Preloader />
-        ) : apiError ? (
+        ) : ingredientsQuery.error ? (
           <p>Не удалось загрузить ингредиенты.</p>
         ) : (
           <>
-            <BurgerIngredients
-              ingredients={apiIngredients}
-              onIngredientClick={openIngredientModal}
-            />
-            <BurgerConstructor
-              ingredients={apiIngredients}
-              onOrderClick={openOrderModal}
-            />
+            <BurgerIngredients onIngredientClick={openIngredientModal} />
+            <BurgerConstructor submitOrder={submitOrder} />
           </>
         )}
       </main>
@@ -92,7 +76,7 @@ export const App = () => {
       )}
       {activeModal === 'order' && (
         <Modal onClose={closeModal}>
-          <OrderDetails order={order} />
+          <OrderDetails orderMutation={orderMutation} />
         </Modal>
       )}
     </div>
