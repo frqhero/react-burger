@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useCreateOrderMutation, useGetIngredientsQuery } from '@/api/burgerApi';
+import { clearConstructor } from '@/services/burgerConstructor/slice';
 import {
   clearSelectedIngredient,
   getSelectedIngredient,
@@ -29,6 +30,9 @@ export const App = () => {
 
   function closeModal() {
     dispatch(clearSelectedIngredient());
+    if (activeModal === 'order') {
+      dispatch(clearConstructor());
+    }
     setActiveModal(null);
   }
 
