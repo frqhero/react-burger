@@ -60,10 +60,7 @@ export const App = () => {
           <p>Не удалось загрузить ингредиенты.</p>
         ) : (
           <>
-            <BurgerIngredients
-              ingredients={ingredientsQuery.data}
-              onIngredientClick={openIngredientModal}
-            />
+            <BurgerIngredients onIngredientClick={openIngredientModal} />
             <BurgerConstructor submitOrder={submitOrder} />
           </>
         )}

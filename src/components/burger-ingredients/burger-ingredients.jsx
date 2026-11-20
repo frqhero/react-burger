@@ -1,11 +1,16 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useRef, useState } from 'react';
 
+import { useGetIngredientsQuery } from '@/api/burgerApi';
+
 import IngredientCard from '../ingredient-card/ingredient-card';
 
 import styles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = ({ ingredients, onIngredientClick }) => {
+export const BurgerIngredients = ({ onIngredientClick }) => {
+  const ingredientsQuery = useGetIngredientsQuery();
+  const ingredients = ingredientsQuery.data;
+
   const buns = ingredients.filter((element) => {
     return element.type === 'bun';
   });
