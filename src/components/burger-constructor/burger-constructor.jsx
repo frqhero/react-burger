@@ -1,63 +1,109 @@
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
+import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  addIngredient,
+  getBun,
+  getIngredients,
+  getPrice,
+  removeIngredient,
+} from '@/services/burgerConstructor/slice';
+
+import { ConstructorFilling } from '../constructor-filling/constructor-filling';
 
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = ({ ingredients, onOrderClick }) => {
-  console.log(ingredients);
+export const BurgerConstructor = ({ submitOrder }) => {
+  const dispatch = useDispatch();
 
-  const bun = ingredients.find((el) => el.type === 'bun');
+  const [{ isOver, draggedItem }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop: (item) => dispatch(addIngredient(item)),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      draggedItem: monitor.getItem(),
+    }),
+  });
 
-  const burgerFillings = ingredients.filter((el) => el.type !== 'bun');
+  const bun = useSelector(getBun);
+  const ingredients = useSelector(getIngredients);
 
-  const price = ingredients.reduce((accumulator, current) => {
-    return accumulator + current.price;
-  }, 0);
-
-  console.log(price);
+  const price = useSelector(getPrice);
 
   return (
     <section className={`${styles.burger_constructor}`}>
-      <div className={`${styles.burger_components} ml-4`}>
-        <div className={`pl-8`}>
-          <ConstructorElement
-            isLocked
-            price={bun.price}
-            text={`${bun.name} (верх)`}
-            thumbnail={bun.image}
-            type="top"
-          />
-        </div>
+      <div className={`${styles.burger_components} ml-4`} ref={dropTarget}>
+        {bun === null ? (
+          <div
+            className={`${styles.placeholder} ${styles.top_bun} ml-8 ${isOver && draggedItem?.type === 'bun' ? styles.highlight : ''}`}
+          >
+            <p className="text text_type_main-default">Выберите булки</p>
+          </div>
+        ) : (
+          <div className={`pl-8`}>
+            <ConstructorElement
+              isLocked
+              price={bun.price}
+              text={`${bun.name} (верх)`}
+              thumbnail={bun.image}
+              type="top"
+            />
+          </div>
+        )}
+
         <ul className={`${styles.fillings} custom-scroll`}>
-          {burgerFillings.map((ingr) => (
-            <li key={ingr._id} className={styles.burger_filling}>
-              <DragIcon type="primary" className={styles.drag_icon} />
-              <ConstructorElement
-                price={ingr.price}
-                text={ingr.name}
-                thumbnail={ingr.image}
-              />
+          {ingredients.length === 0 ? (
+            <li>
+              <div
+                className={`${styles.placeholder} ${styles.empty_filling} ml-8 ${isOver && draggedItem?.type !== 'bun' ? styles.highlight : ''}`}
+              >
+                <p className="text text_type_main-default">Выберите начинку</p>
+              </div>
             </li>
-          ))}
+          ) : (
+            ingredients.map((ingredient) => (
+              <ConstructorFilling
+                key={ingredient.uniqueId}
+                ingredient={ingredient}
+                onRemove={() => dispatch(removeIngredient(ingredient.uniqueId))}
+              />
+            ))
+          )}
         </ul>
-        <div className={`pl-8 custom-scroll`}>
-          <ConstructorElement
-            isLocked
-            price={bun.price}
-            text={`${bun.name} (низ)`}
-            thumbnail={bun.image}
-            type="bottom"
-          />
-        </div>
+
+        {bun === null ? (
+          <div
+            className={`${styles.placeholder} ${styles.bottom_bun} ml-8 ${isOver && draggedItem?.type === 'bun' ? styles.highlight : ''}`}
+          >
+            <p className="text text_type_main-default">Выберите булки</p>
+          </div>
+        ) : (
+          <div className={'pl-8'}>
+            <ConstructorElement
+              isLocked
+              price={bun.price}
+              text={`${bun.name} (низ)`}
+              thumbnail={bun.image}
+              type="bottom"
+            />
+          </div>
+        )}
       </div>
       <div className={`${styles.info}`}>
         <p className="text text_type_digits-medium mr-2">{price}</p>
         <CurrencyIcon type="primary" className={styles.currency_icon} />
-        <Button extraClass="ml-10" size="large" type="primary" onClick={onOrderClick}>
+        <Button
+          extraClass="ml-10"
+          size="large"
+          type="primary"
+          disabled={bun === null}
+          onClick={() => submitOrder(bun, ingredients)}
+        >
           Оформить заказ
         </Button>
       </div>

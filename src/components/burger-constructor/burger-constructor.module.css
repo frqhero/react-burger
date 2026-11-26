@@ -43,3 +43,29 @@
 .drag_icon {
   flex-shrink: 0;
 }
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 536px;
+  min-height: 80px;
+  background-color: #2f2f37;
+}
+
+.top_bun {
+  border-radius: 88px 88px 40px 40px;
+}
+
+.bottom_bun {
+  border-radius: 40px 40px 88px 88px;
+}
+
+.empty_filling {
+  border-radius: 40px;
+}
+
+.highlight {
+  outline: 2px dashed #4c4cff;
+  outline-offset: -2px;
+}
